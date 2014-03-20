@@ -1,3 +1,3 @@
-# Jlitran
+# Jultran
 
-[![Build Status](https://travis-ci.org/jsbj/Jlitran.jl.png)](https://travis-ci.org/jsbj/Jlitran.jl)
+[![Build Status](https://travis-ci.org/jsbj/Jultran.jl.png)](https://travis-ci.org/jsbj/Jultran.jl)

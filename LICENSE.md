@@ -1,4 +1,4 @@
-The Jlitran.jl package is licensed under the MIT "Expat" License:
+The Jultran.jl package is licensed under the MIT "Expat" License:
 
 > Copyright (c) 2014: Jonah Bloch-Johnson.
 >
