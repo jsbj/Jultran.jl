@@ -32,7 +32,7 @@ function compute_κs(gas, νs::Range, T, p)
             ν = float(line[4:15]) # wavenumber
             # air-broadened line width, with temperature dependence:
             γ = float(line[36:40]) * (p/1.013e5) * (296/T)^float(line[56:59])
-    
+
             ν_min, ν_max  = ν + [-1,1] * num_widths * γ
             if (ν_min <= ν_grid_max) && (ν_max >= ν_grid_min)
                 i_min = max(1, 1 + iceil((ν_min-ν_grid_min)/ν_grid_step))
