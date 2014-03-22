@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke-width: 1.5px;
+}
+
+.sun {
+    stroke: red;
+}
+
+.earth {
+ stroke: steelblue;
+}
+
+</style>
+<link rel="stylesheet" type="text/css" href="dataSlider.css">
+<body>
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="dataSlider.js"></script>
+<script>
+
+var margin = {top: 20, right: 20, bottom: 130, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
+
+
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var dataSnah
+d3.json("spectrum.json", function(error, data) {
+    dataSnah = data
+    var x = d3.scale.linear()
+        .domain(data.νs)
+        .range([0, width]);
+
+    var y = d3.scale.linear()
+        .domain(d3.extent(data.sunlight.values)) // + data.data[0].earthlight.values))
+        .range([height, 0]);
+    
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+    
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+    
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+        
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+    
+    
+    dataSlider(svg, {x: 10, y: 500, width: 850, height: 20}, data, function(timeIndex, data) {
+        // var dataRowdata.data[timeIndex]
+        var sunDataObjs = []
+        
+        data.sunlight.values.forEach(function(d,i) {
+            sunDataObjs.push({
+                x: data.sunlight.νs[i],
+                y: d
+            })
+        });
+        
+        var earthDataObjs = []
+        
+        data.data[timeIndex].earthlight.values.forEach(function(d,i) {
+            earthDataObjs.push({
+                x: data.data[timeIndex].earthlight.νs[i],
+                y: d
+            })
+        });
+        
+        var co2DataObjs = []
+        
+        var blah = d3.extent(data.data[timeIndex].co2)
+        blah[0]
+        blah[1]
+        
+        data.data[timeIndex].co2.values.forEach(function(d,i) {
+            co2DataObjs.push({
+                x: data.data[timeIndex].co2.νs[i] / ,
+                y: d
+            })
+        });
+                    
+        var line = d3.svg.line()
+            .x(function(d) { return x(d.x); })
+            .y(function(d) { return y(d.y); });
+            
+          // .append("text")
+          //   .attr("transform", "rotate(-90)")
+          //   .attr("y", 6)
+          //   .attr("dy", ".71em")
+          //   .style("text-anchor", "end")
+          //   .text("Price ($)");
+            
+        svg.selectAll(".line")
+            .remove();
+        
+        svg.append("path")
+            .datum(sunDataObjs)
+            .attr("class", "line sun")
+            .attr("d", line);
+        
+        svg.append("path")
+            .datum(earthDataObjs)
+            .attr("class", "line earth")
+            .attr("d", line);
+            
+            
+        
+        
+    })
+});
+
+
+
+</script>
